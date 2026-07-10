@@ -1,5 +1,8 @@
 # IDE
 .idea
+.vscode
+.metals
+.bloop
 # Build
 .gradle
 build
