@@ -1,6 +1,10 @@
 plugins {
     // Apply scala plugin to add scala support.
     scala
+    // Apply the application plugin to add support for starting application.
+    application
+    // Adds tasks to export a runnable jar.
+    id("com.gradleup.shadow") version "9.3.1"
     // Apply scalatest plugin to add scalatest support through `test` task.
     id("com.github.maiflai.scalatest") version "0.33"
     // Apply wortremover plugin for static analysis
@@ -47,6 +51,10 @@ tasks.withType<Test>().configureEach {
 
 tasks.named("build") {
     dependsOn("scaladoc")
+}
+
+application {
+    mainClass.set("org.example.Main")
 }
 
 spotless {
