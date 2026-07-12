@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: "25"
+          distribution: "temurin"
+
+      - name: Build
+        run: ./gradlew build
+
+      - name: Bump version and push tag
+        id: tag_bump
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+
+      - name: Create Automatic Release
+        if: steps.tag_bump.outputs.new_tag != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ steps.tag_bump.outputs.new_tag }} target/out/jvm/scala-3.8.1/scala3-template/*-fat.jar \
+            --title "Release ${{ steps.tag_bump.outputs.new_tag }}" \
+            --generate-notes
+
+      - name: Deploy to GitHub Pages
+        if: steps.tag_bump.outputs.new_tag != ''
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/docs/scaladoc
+          publish_branch: gh-pages
