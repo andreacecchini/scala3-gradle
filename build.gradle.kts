@@ -3,8 +3,10 @@ plugins {
     scala
     // Apply scalatest plugin to add scalatest support through `test` task.
     id("com.github.maiflai.scalatest") version "0.33"
-    //
+    // Apply wortremover plugin for static analysis
     id("io.github.jahrim.wartremover") version "0.1.3"
+    // Apply spotless plugin to use scalafmt formatting tool
+    id("com.diffplug.spotless") version "8.8.0"
 }
 
 tasks.withType<ScalaCompile>().configureEach {
@@ -40,6 +42,13 @@ tasks.withType<Test>().configureEach {
     testLogging {
         events("passed", "failed")
         showCauses = true
+    }
+}
+
+spotless {
+    scala {
+        scalafmt("3.11.1").configFile(".scalafmt.conf")
+        target("src/**/*.scala")
     }
 }
 
