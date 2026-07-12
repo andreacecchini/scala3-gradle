@@ -38,7 +38,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${{ steps.tag_bump.outputs.new_tag }} build/libs/scala3-gradle-template-all.jar \
+          gh release create ${{ steps.tag_bump.outputs.new_tag }} build/libs/*.jar \
             --title "Release ${{ steps.tag_bump.outputs.new_tag }}" \
             --generate-notes
 
