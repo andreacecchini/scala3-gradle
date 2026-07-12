@@ -33,3 +33,10 @@ dependencies {
     testImplementation("org.scalatest:scalatest_$scalaMinor:3.2.12")
     testRuntimeOnly("com.vladsch.flexmark:flexmark-all:0.64.8")
 }
+
+tasks.withType<Test>().configureEach {
+    testLogging {
+        events("passed", "failed")
+        showCauses = true
+    }
+}
