@@ -53,6 +53,10 @@ tasks.named("build") {
     dependsOn("scaladoc")
 }
 
+tasks.named("shadowJar") {
+    dependsOn("scaladoc")
+}
+
 application {
     mainClass.set("org.example.Main")
 }
