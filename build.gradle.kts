@@ -45,6 +45,10 @@ tasks.withType<Test>().configureEach {
     }
 }
 
+tasks.named("build") {
+    dependsOn("scaladoc")
+}
+
 spotless {
     scala {
         scalafmt("3.11.1").configFile(".scalafmt.conf")
