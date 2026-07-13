@@ -10,7 +10,7 @@ const attrsToCopy = [
 
 /**
  * @typedef {Object} SavedPageState
- * @property {String} mainDiv
+ * @property {Strign} mainDiv
  * @property {String} leftColumn
  * @property {String} title
  * @property {Record<string, string>} attrs
@@ -165,11 +165,6 @@ function attachAllListeners() {
         return;
       }
       if (url.origin !== window.location.origin) {
-        return;
-      }
-      // ISSUE-19208, treat as normal link when lacking HTTP server,
-      // otherwise GET request blocked by CORS protections.
-      if (window.location.protocol.startsWith("file")) {
         return;
       }
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
@@ -327,7 +322,7 @@ function attachAllListeners() {
 
   if (location.hash) {
     var target = location.hash.substring(1);
-    // setting the 'expand' class on the top-level container causes undesirable styles
+    // setting the 'expand' class on the top-level container causes undesireable styles
     // to apply to the top-level docs, so we avoid this logic for that element.
     if (target != "container") {
       var selected = document.getElementById(location.hash.substring(1));
@@ -573,7 +568,7 @@ function showGraph() {
         .attr("offset", "30%");
       radialGradient
         .append("stop")
-        .attr("stop-color", "var(--background-main)")
+        .attr("stop-color", "var(--background-default)")
         .attr("offset", "100%");
 
       var inner = svg.append("g");
