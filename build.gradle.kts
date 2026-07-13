@@ -7,18 +7,20 @@ plugins {
     id("com.gradleup.shadow") version "9.3.1"
     // Apply scalatest plugin to add scalatest support through `test` task.
     id("com.github.maiflai.scalatest") version "0.33"
-    // Apply wortremover plugin for static analysis
+    // Apply wartremover plugin for static analysis
     id("io.github.jahrim.wartremover") version "0.1.3"
     // Apply spotless plugin to use scalafmt formatting tool
     id("com.diffplug.spotless") version "8.8.0"
+    // Apply scoverage plugin for code coverage
+    id("org.scoverage") version "9.0"
 }
 
-tasks.withType<ScalaCompile>().configureEach {
-    scalaCompileOptions.additionalParameters = listOf(
-        "-Xunchecked-java-output-version",
-        JavaVersion.current().majorVersion,
-    )
-}
+//tasks.withType<ScalaCompile>().configureEach {
+//    scalaCompileOptions.additionalParameters = listOf(
+//        "-Xunchecked-java-output-version",
+//        JavaVersion.current().majorVersion,
+//    )
+//}
 
 repositories {
     mavenCentral()
@@ -26,12 +28,12 @@ repositories {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
 dependencies {
-    val scala = "3.8.4"
+    val scala = "3.3.4"
     val (scalaMinor, _) = requireNotNull(
         Regex("^(\\d+)(\\.\\d+)(\\.\\d+)?$")
             .matchEntire(scala)
@@ -66,5 +68,13 @@ spotless {
         scalafmt("3.11.1").configFile(".scalafmt.conf")
         target("src/**/*.scala")
     }
+}
+
+scoverage {
+    val coverageThreshold = "0.70".toBigDecimal()
+    excludedFiles.set(listOf(".*/Main"))
+    minimumRate.set(coverageThreshold)
+    coverageOutputHTML.set(true)
+    coverageOutputXML.set(true)
 }
 

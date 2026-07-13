@@ -19,3 +19,5 @@ jobs:
                   distribution: "temurin"
             - name: Build
               run: ./gradlew build
+            - name: Coverage
+              run: ./gradlew jacocoTestCoverageVerification
